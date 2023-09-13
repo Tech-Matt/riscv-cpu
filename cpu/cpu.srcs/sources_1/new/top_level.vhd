@@ -32,12 +32,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity top_level is
---  Port ( );
+    
 end top_level;
 
 architecture Behavioral of top_level is
 
 begin
-
+   
 
 end Behavioral;
