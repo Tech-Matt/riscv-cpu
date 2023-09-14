@@ -3,12 +3,12 @@
 # SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Tue Sep 12 22:08:50 2023
-# Process ID: 20961
+# Start of session at: Thu Sep 14 08:44:34 2023
+# Process ID: 10929
 # Current directory: /home/techmatt01/Desktop/riscv-cpu/cpu/cpu.runs/blk_mem_gen_0_synth_1
 # Command line: vivado -log blk_mem_gen_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source blk_mem_gen_0.tcl
 # Log file: /home/techmatt01/Desktop/riscv-cpu/cpu/cpu.runs/blk_mem_gen_0_synth_1/blk_mem_gen_0.vds
 # Journal file: /home/techmatt01/Desktop/riscv-cpu/cpu/cpu.runs/blk_mem_gen_0_synth_1/vivado.jou
-# Running On: techmatt01-pc, OS: Linux, CPU Frequency: 3100.002 MHz, CPU Physical cores: 2, Host memory: 12395 MB
+# Running On: techmatt01-pc, OS: Linux, CPU Frequency: 3100.003 MHz, CPU Physical cores: 2, Host memory: 12395 MB
 #-----------------------------------------------------------
 source blk_mem_gen_0.tcl -notrace

@@ -61,16 +61,60 @@ fetch: entity work.instruction_fetch port map (
 
 clock: process
 begin
-    -- 1 MHz clock
+    -- 100 MHz clock
     clk <= '0';
-    wait for 1 us;
+    wait for 5 ns;
     clk <= '1';
-    wait for 1 us;
+    wait for 5 ns;
 end process;
 
 simulation: process
 begin
 
+pc_in <= (others => '0'); 
+
+res <= '0'; -- All'inizio il reset è spento
+load_en <= '0'; --Disattivo il registro del program counter
+wait for 100 ns;
+
+load_en <= '1';
+wait for 50 ns;
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+
+pc_in <= pc_in + 4;
+wait for 100 ns;
+
+
+res <= '1'; -- Resetto la instruction memory
+wait;
 
 end process;
 

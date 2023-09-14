@@ -37,7 +37,7 @@ entity instruction_fetch is
     clk: in std_logic; -- Pilota i registri di PC, la block ram, NPC e IR
     pc_in: in unsigned(31 downto 0); --Program counter in arrivo dagli altri stage
     load_en: in std_logic; -- Attiva o disattiva la scrittura sul registro del program counter
-    res: in std_logic;  -- Reset asincrono per la instruction memory
+    res: in std_logic;  -- Reset asincrono per la instruction memory (attivo alto)
     instr_out: out std_logic_vector(31 downto 0); --istruzione fetchata dalla instruction memory
     current_pc: out unsigned(31 downto 0); --Program counter attuale in uscita (utile per i branch)
     next_pc: out unsigned(31 downto 0) --Program counter attuale + 4byte
