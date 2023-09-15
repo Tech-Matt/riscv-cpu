@@ -61,11 +61,11 @@ fetch: entity work.instruction_fetch port map (
 
 clock: process
 begin
-    -- 100 MHz clock
+    -- 50 MHz clock
     clk <= '0';
-    wait for 5 ns;
+    wait for 10 ns;
     clk <= '1';
-    wait for 5 ns;
+    wait for 10 ns;
 end process;
 
 simulation: process
@@ -114,6 +114,7 @@ wait for 100 ns;
 
 
 res <= '1'; -- Resetto la instruction memory
+wait for 100 ns;
 wait;
 
 end process;

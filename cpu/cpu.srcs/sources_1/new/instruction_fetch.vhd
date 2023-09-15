@@ -53,7 +53,7 @@ signal instr: std_logic_vector(31 downto 0); -- Instruction fetched
 COMPONENT blk_mem_gen_0
   PORT (
     clka : IN STD_LOGIC;
-    rsta : IN STD_LOGIC; --reset asincro
+    rsta : IN STD_LOGIC; --reset asincrono
     ena : IN STD_LOGIC;
     addra : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0) 
@@ -83,13 +83,7 @@ instr_mem : blk_mem_gen_0
   end if;
   end process;
   
-  -- Accesso all'instruction memory
-  fetch: process(clk)
-  begin
-  if(rising_edge (clk)) then
-    instr_out <= instr;
-  end if;
-  end process;
+  instr_out <= instr; -- Appena si aggiorna il program counter vado a leggere in memoria con un delay di 1 clock cycle
   
   -- Next program counter
   process (clk) 
