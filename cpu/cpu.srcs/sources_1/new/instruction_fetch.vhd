@@ -34,13 +34,13 @@ use IEEE.NUMERIC_STD.ALL;
 entity instruction_fetch is
 
     port ( 
-    clk: in std_logic; -- Pilota i registri di PC, la block ram, NPC e IR
-    pc_in: in unsigned(31 downto 0); --Program counter in arrivo dagli altri stage
-    load_en: in std_logic; -- Attiva o disattiva la scrittura sul registro del program counter
-    res: in std_logic;  -- Reset asincrono per la instruction memory (attivo alto)
-    instr_out: out std_logic_vector(31 downto 0); --istruzione fetchata dalla instruction memory
-    current_pc: out unsigned(31 downto 0); --Program counter attuale in uscita (utile per i branch)
-    next_pc: out unsigned(31 downto 0) --Program counter attuale + 4byte
+    clk: in std_logic; -- runs registers of PC, block ram, NPC e IR
+    pc_in: in unsigned(31 downto 0); -- Program counter coming from other stages
+    load_en: in std_logic; -- Activate or deactivate write on PC register (active low)
+    res: in std_logic;  -- Async reset for instruction memory (active low)
+    instr_out: out std_logic_vector(31 downto 0); -- Instruction fetched from instruction memory
+    current_pc: out unsigned(31 downto 0); -- Current PC connected to the next stages
+    next_pc: out unsigned(31 downto 0) -- Next PC (PC + 4 bytes)
     );
     
 end instruction_fetch;
@@ -53,37 +53,37 @@ signal instr: std_logic_vector(31 downto 0); -- Instruction fetched
 COMPONENT blk_mem_gen_0
   PORT (
     clka : IN STD_LOGIC;
-    rsta : IN STD_LOGIC; --reset asincrono
+    rsta : IN STD_LOGIC; -- Async reset
     ena : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0) 
+    addra : IN STD_LOGIC_VECTOR(31 DOWNTO 0); --
+    douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0) -- Instruction coming out from the Instruction Memory
   );
 END COMPONENT;
 
 begin
 
--- Instanzio la block ram
+-- Block ram init
 instr_mem : blk_mem_gen_0
   PORT MAP (
     clka => clk,
     rsta => res,
-    ena => '1', -- Per adesso imposto che l'istr_mem è sempre attiva, al massimo disattivo il registro del PC
+    ena => '1', -- For now instruction memory is always active
     addra => std_logic_vector(pc),
     douta => instr
   );
   
-  -- Aggiorno il registro del program counter
+  -- Update pc register
   program_counter: process (clk)
   begin
   if(rising_edge(clk)) then
-    if(load_en = '1') then
-        pc <= pc_in; -- Questo è un segnale interno
-        current_pc <= pc_in; -- Questo va in uscita
+    if(load_en = '0') then
+        pc <= pc_in; -- Update internal signal
+        current_pc <= pc_in; -- This signal goes to the next stage 
     end if;
   end if;
   end process;
   
-  instr_out <= instr; -- Appena si aggiorna il program counter vado a leggere in memoria con un delay di 1 clock cycle
+  instr_out <= instr; -- As soon as the PC is updated I'll read the instruction memory with 1 clock cycle delay
   
   -- Next program counter
   process (clk) 

@@ -1,0 +1,2 @@
+register_file.v,verilog,xil_defaultlib,../../../../cpu.gen/sources_1/ip/register_file/sim/register_file.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v
