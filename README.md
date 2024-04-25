@@ -1,7 +1,7 @@
 # riscv-cpu
 A RISC-V RV32I cpu implementation on the Zedboard FPGA.
 
-Read Github Wiki for more details.
+Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details.
 
 ## Todo
 - [ ] Check instruction fetch structure
