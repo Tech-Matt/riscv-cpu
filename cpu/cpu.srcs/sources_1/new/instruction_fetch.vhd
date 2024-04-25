@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Rizzo Mattia
 -- 
 -- Create Date: 09/12/2023 05:27:37 PM
 -- Design Name: 
@@ -53,7 +53,7 @@ signal instr: std_logic_vector(31 downto 0); -- Instruction fetched
 COMPONENT blk_mem_gen_0
   PORT (
     clka : IN STD_LOGIC;
-    rsta : IN STD_LOGIC; -- Async reset
+    rsta : IN STD_LOGIC;
     ena : IN STD_LOGIC;
     addra : IN STD_LOGIC_VECTOR(31 DOWNTO 0); --
     douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0) -- Instruction coming out from the Instruction Memory
