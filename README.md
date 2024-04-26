@@ -9,4 +9,5 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 - [ ] Write Instruction Decode
 - [ ] Do an Instruction Decode testbench
 - [ ] Write Instruction fetch wiki
+- [ ] Update Instruction Fetch Image and colors (turn to white background)
 
