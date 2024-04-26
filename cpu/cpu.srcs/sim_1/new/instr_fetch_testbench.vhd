@@ -39,7 +39,7 @@ architecture Behavioral of instr_fetch_testbench is
 
 signal clk: std_logic;
 signal pc_in: unsigned(31 downto 0);
-signal load_en: std_logic;
+signal load_en: std_logic; -- Load enable of program counter
 signal res: std_logic;
 signal instr_out: std_logic_vector(31 downto 0);
 signal current_pc: unsigned(31 downto 0);
@@ -63,9 +63,9 @@ clock: process
 begin
     -- 50 MHz clock
     clk <= '0';
-    wait for 10 ns;
+    wait for 20 ns;
     clk <= '1';
-    wait for 10 ns;
+    wait for 20 ns;
 end process;
 
 simulation: process
@@ -73,11 +73,11 @@ begin
 
 pc_in <= (others => '0'); 
 
-res <= '0'; -- All'inizio il reset è spento
-load_en <= '0'; --Disattivo il registro del program counter
+res <= '0'; -- Instruction memory reset is off
+load_en <= '1'; -- PC register is off
 wait for 100 ns;
 
-load_en <= '1';
+load_en <= '0'; -- Activate register
 wait for 50 ns;
 
 pc_in <= pc_in + 4;
@@ -113,7 +113,10 @@ pc_in <= pc_in + 4;
 wait for 100 ns;
 
 
-res <= '1'; -- Resetto la instruction memory
+res <= '1'; -- Instruction Memory Reset
+wait for 100 ns;
+
+pc_in <= pc_in + 4;
 wait for 100 ns;
 wait;
 
