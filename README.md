@@ -9,5 +9,6 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 - [ ] Do an Instruction Decode testbench
 - [ ] Draw Instruction Decode Structure
 - [ ] Write Wiki for instruction Decode
+- [ ] Find another tool for drawing CPU blocks (DrawIO sucks)
 
 
