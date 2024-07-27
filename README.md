@@ -3,6 +3,10 @@ A RISC-V RV32I cpu implementation on the Zedboard FPGA.
 
 Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details.
 
+## Overview
+![image](https://github.com/user-attachments/assets/d14bb4e3-7c2d-4a18-9439-53f07ec98cef)
+
+
 ## Todo
 
 <ins> Max Priority </ins>
