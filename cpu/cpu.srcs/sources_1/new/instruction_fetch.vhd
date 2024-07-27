@@ -34,10 +34,13 @@ use IEEE.NUMERIC_STD.ALL;
 entity instruction_fetch is
 
     port ( 
+    -- INPUTS
     clk: in std_logic; -- runs registers of PC, block ram, NPC e IR
     pc_in: in unsigned(31 downto 0); -- Program counter coming from other stages
     load_en: in std_logic; -- Activate or deactivate write on PC register (active low)
     res: in std_logic;  -- sync reset for instruction memory (active high)
+    
+    -- OUTPUTS
     instr_out: out std_logic_vector(31 downto 0); -- Instruction fetched from instruction memory
     current_pc: out unsigned(31 downto 0); -- Current PC connected to the next stages
     next_pc: out unsigned(31 downto 0) -- Next PC (PC + 4 bytes)

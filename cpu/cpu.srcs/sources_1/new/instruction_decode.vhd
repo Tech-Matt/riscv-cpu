@@ -35,7 +35,7 @@ entity instruction_decode is
   Port ( 
         -- INPUTS
         clk: in std_logic; 
-        pc: in unsigned(31 downto 0); -- Current Program counter (it is an input of 
+        pc: in unsigned(31 downto 0); -- Current Program counter
         next_pc: in unsigned(31 downto 0); -- Next program counter
         instr: in std_logic_vector (31 downto 0); -- Instruction coming from Instruction Fetch stage
         write_en: in std_logic; -- Write emable for the register file
@@ -48,9 +48,7 @@ entity instruction_decode is
         op_class: out std_logic_vector(4 downto 0); -- Operation type (Encoded ONE-HOT OSLBJ)
         alu_opcode: out std_logic_vector(2 downto 0);
         a_sel: out std_logic;
-        b_sel: out std_logic;
-        
-        
+        b_sel: out std_logic
         );
 end instruction_decode;
 
@@ -69,26 +67,50 @@ COMPONENT dist_mem_gen_0
   );
 END COMPONENT;
 
--- Read Addresses
-signal ADDR_A: std_logic_vector(31 downto 0);
-signal ADDR_B: std_logic_vecctor(31 downto 0);
--- Signals where instruction will be decoded
-signal OPCODE: std_logic_vector(6 downto 0);
-signal func7: std_logic_vector(7 downto 0);
-signal func3: std_logic_vector(3 downto 0);
+-- Splitter
+COMPONENT splitter
+    PORT( 
+    -- INPUT
+        instr: in std_logic_vector(31 downto 0);
+        
+    -- OUTPUT
+        rd: out std_logic_vector(4 downto 0);
+        rs1: out std_logic_vector(4 downto 0); 
+        rs2: out std_logic_vector(4 downto 0); 
+        opcode: out std_logic_vector(6 downto 0); 
+        func3: out std_logic_vector(2 downto 0);
+        func7: out std_logic_vector(6 downto 0)
+    );
+END COMPONENT;
 
--------------------------------------------------------
+signal rd: std_logic_vector(4 downto 0); -- Destination Register Address
+signal rs1: std_logic_vector(4 downto 0); -- Source Register 1
+signal rs2: std_logic_vector(4 downto 0); -- Source Register 2
+signal opcode: std_logic_vector(6 downto 0); 
+signal func3: std_logic_vector(2 downto 0);
+signal func7: std_logic_vector(6 downto 0);
+
 begin
+
+split: splitter port map (
+    instr <= instr,
+    rd <= rd,
+    rs1 <= rs1,
+    rs2 <= rs2,
+    opcode <= opcode,
+    func3 <= func3,
+    func7 <= func7
+);
 
 register_file: dist_mem_gen_0
   PORT MAP (
-    a => ADDR_A, -- Read Address of RS_A
-    d => rd_value, -- Data input for write operations
-    dpra => ADDR_B, -- Read Address of RS_B
-    clk => clk,
-    we => write_en, -- Write enable
-    qspo => RS_A, -- RS_A Data
-    qdpo => RS_B -- RS_B Data
+    a <= ADDR_A, -- Read Address of RS_A
+    d <= rd_value, -- Data input for write operations
+    dpra <= ADDR_B, -- Read Address of RS_B
+    clk <= clk,
+    we <= write_en, -- Write enable
+    qspo <= RS_A, -- RS_A Data Output
+    qdpo <= RS_B -- RS_B Data Output
   );
 
 
