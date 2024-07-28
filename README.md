@@ -23,3 +23,6 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 - [ ] Write table of signals for instruction fetch
 - [ ] Write table of signals for instruction decode
 
+## Implementation Comments
+- Decode implementation is difficult to read, make it more readable either by indentation or changing completely the structure.
+
