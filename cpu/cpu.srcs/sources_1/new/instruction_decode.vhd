@@ -47,8 +47,6 @@ entity instruction_decode is
         immediate: out unsigned(31 downto 0); 
         op_class: out std_logic_vector(4 downto 0); -- Operation type (Encoded ONE-HOT OSLBJ)
         alu_opcode: out std_logic_vector(2 downto 0);
-        a_sel: out std_logic
-        b_sel: out std_logic
         );
 end instruction_decode;
 
