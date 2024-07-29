@@ -65,40 +65,7 @@ COMPONENT dist_mem_gen_0
   );
 END COMPONENT;
 
--- Splitter
-COMPONENT splitter
-    PORT( 
-    -- INPUT
-        instr: in std_logic_vector(31 downto 0);
-        
-    -- OUTPUT
-        rd: out std_logic_vector(4 downto 0);
-        rs1: out std_logic_vector(4 downto 0); 
-        rs2: out std_logic_vector(4 downto 0); 
-        opcode: out std_logic_vector(6 downto 0); 
-        func3: out std_logic_vector(2 downto 0);
-        func7: out std_logic_vector(6 downto 0)
-    );
-END COMPONENT;
-
-signal rd: std_logic_vector(4 downto 0); -- Destination Register Address
-signal rs1: std_logic_vector(4 downto 0); -- Source Register 1
-signal rs2: std_logic_vector(4 downto 0); -- Source Register 2
-signal opcode: std_logic_vector(6 downto 0); 
-signal func3: std_logic_vector(2 downto 0);
-signal func7: std_logic_vector(6 downto 0);
-
 begin
-
-split: splitter port map (
-    instr <= instr,
-    rd <= rd,
-    rs1 <= rs1,
-    rs2 <= rs2,
-    opcode <= opcode,
-    func3 <= func3,
-    func7 <= func7
-);
 
 register_file: dist_mem_gen_0
   PORT MAP (

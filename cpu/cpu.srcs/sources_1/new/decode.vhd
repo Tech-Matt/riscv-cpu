@@ -34,51 +34,100 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity decode is
   Port ( 
     -- INPUT
-    func3: in std_logic_vector(2 downto 0);
-    func7: in std_logic_vector(6 downto 0);
-    opcode: in std_logic_vector(6 downto 0);
-    
+    instr: in std_logic_vector(31 downto 0);
+
     -- OUTPUT
     op_class: out std_logic_vector(4 downto 0); -- OSLBJ (One-Hot encoded, OP-Store-Load-Branch-Jump)
     alu_opcode: out std_logic_vector(2 downto 0); -- func3 in this case
-    cond_opcode: out std_logic_vector(2 downto 0) -- func3 in this case
+    cond_opcode: out std_logic_vector(2 downto 0); -- func3 in this case
+    rd: out std_logic_vector(4 downto 0); -- Destination Register Address (5 bit = 32 registers)
+    rs1: out std_logic_vector(4 downto 0); -- Source Register 1
+    rs2: out std_logic_vector(4 downto 0); -- Source Register 2
+    immediate: out std_logic_vector(11 downto 0)
   );
 end decode;
 
 architecture Behavioral of decode is
 
+signal func3: std_logic_vector(2 downto 0);
+signal func7: std_logic_vector(6 downto 0);
+signal opcode: std_logic_vector(6 downto 0);
+
 begin
 
--- ASSIGN OPERATION CLASS DIVIDING BY OPCODE
-process(opcode) 
+-- SPLITTING SIGNALS OUT OF INSTRUCION
+rd <= instr(11 downto 7);
+rs1 <= instr(19 downto 15);
+rs2 <= instr(24 downto 20);
+opcode <= instr(6 downto 0);
+func3 <= instr(14 downto 12);
+func7 <= instr(31 downto 25);
+
+-- ASSIGN OPERATION CLASS BASED ON OPCODE
+process(opcode)
 begin
-    op_class <= "00000"; --DEFAULT VALUE
--- (OP) R TYPE AND I TYPE INSTRUCTIONS -----------------------------------------------------------
-    if opcode = "0110011" or opcode = "0010011" then -- R type and I type (OP)
-        op_class <= "10000";
-        cond_opcode <= "111";
--------------------------------------------------------------------------------------------------
--- (STORE) S TYPE INSTRUCTIONS ------------------------------------------------------------------
-    elsif opcode = "0100011" then                    -- S type (Store)
-        op_class <= "01000";
-        cond_opcode <= "111"; -- default value
--------------------------------------------------------------------------------------------------
--- (LOAD) I TYPE INSTRUCTIONS -------------------------------------------------------------------
-    elsif opcode = "0000011" then                    -- I type (Load)
-        op_class <= "00100";
-        cond_opcode <= "111"; -- default value
--------------------------------------------------------------------------------------------------
--- (BRANCH) B TYPE INSTRUCIONS ------------------------------------------------------------------
-    elsif opcode = "1100011" then                    -- B type (Branch)
-        op_class <= "00010";
-        cond_opcode <= func3; 
--------------------------------------------------------------------------------------------------
--- (JUMP) J TYPE INSTRUCTIONS -------------------------------------------------------------------
-    elsif opcode = "1101111" then                    -- J type (Jump)
-        op_class <= "00001";
-        cond_opcode <= "111"; -- default value
--------------------------------------------------------------------------------------------------
-    end if;
+    op_class <= "00000"; -- Default value
+
+    case opcode is
+        when "0110011" | "0010011" => -- R type and I type (OP)
+            op_class <= "10000";
+        when "0100011" => -- S type (Store)
+            op_class <= "01000";
+        when "0000011" => -- I type (Load)
+            op_class <= "00100";
+        when "1100011" => -- B type (Branch)
+            op_class <= "00010";
+        when "1101111" => -- J type (Jump)
+            op_class <= "00001";
+        when others =>
+            op_class <= "00000";
+    end case;
+end process;
+
+
+-- ASSIGN CONDITIONAL OPCODE AND ALU OPCODE BASED ON FUNC3 / FUNC7
+process(opcode, func3, func7)
+begin
+    alu_opcode <= "000"; -- Default ALU opcode
+    cond_opcode <= "111"; -- Default condition opcode
+    
+    case opcode is
+------- R TYPE (OP) -------------------------------------------------------------------------------    
+        when "0110011" =>
+            case func3 is
+                when "000" => 
+                    if func7 = "0100000" then
+                        alu_opcode <= "010"; -- SUB
+                    else
+                        alu_opcode <= "000"; -- ADD
+                    end if;
+                when "100" => alu_opcode <= "100"; -- XOR
+                when "110" => alu_opcode <= "110"; -- OR
+                when "111" => alu_opcode <= "111"; -- AND
+                when others => null;
+            end case;
+---------------------------------------------------------------------------------------------------
+------- I type (OP) -------------------------------------------------------------------------------       
+        when "0010011" =>
+            case func3 is 
+                when "000" => alu_opcode <= "000"; -- ADDI
+                when "100" => alu_opcode <= "100"; -- XORI
+                when "110" => alu_opcode <= "110"; -- ORI
+                when "111" => alu_opcode <= "111"; --ANDI
+                when others => null;
+            end case;
+---------------------------------------------------------------------------------------------------
+------- B type (BRANCH) --------------------------------------------------------------------------- 
+        when "1100011" =>
+            case func3 is
+                when "000" => cond_opcode <= "000"; -- BEQ
+                when "001" => cond_opcode <= "001"; -- BNE
+                when "100" => cond_opcode <= "100"; -- BLT
+                when "101" => cond_opcode <= "101"; -- BGE
+                when others => null;
+            end case;
+---------------------------------------------------------------------------------------------------       
+     end case;
 end process;
 
 end Behavioral;
