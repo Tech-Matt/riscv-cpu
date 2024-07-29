@@ -10,7 +10,7 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 ## Todo
 
 <ins> Max Priority </ins>
-
+- [ ] Remember to pur default variable value everywhere, otherwise latches could be inferred
 - [ ] Write Instruction Decode
 - [ ] Write block to exctract immediate based on opcode
 - [ ] Write doc for instruction decode
