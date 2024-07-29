@@ -31,7 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity decode is
+entity decoder is
   Port ( 
     -- INPUT
     instr: in std_logic_vector(31 downto 0);
@@ -45,9 +45,9 @@ entity decode is
     rs2: out std_logic_vector(4 downto 0); -- Source Register 2
     immediate: out std_logic_vector(11 downto 0)
   );
-end decode;
+end decoder;
 
-architecture Behavioral of decode is
+architecture Behavioral of decoder is
 
 signal func3: std_logic_vector(2 downto 0);
 signal func7: std_logic_vector(6 downto 0);
@@ -113,7 +113,7 @@ begin
                 when "000" => alu_opcode <= "000"; -- ADDI
                 when "100" => alu_opcode <= "100"; -- XORI
                 when "110" => alu_opcode <= "110"; -- ORI
-                when "111" => alu_opcode <= "111"; --ANDI
+                when "111" => alu_opcode <= "111"; -- ANDI
                 when others => null;
             end case;
 ---------------------------------------------------------------------------------------------------
@@ -130,16 +130,28 @@ begin
      end case;
 end process;
 
+-- GENERATE IMMEDIATE BASED ON OPCODE AND FUNC3
+process(opcode, func3) is
+begin
+    case opcode is
+------- J TYPE ------------------------------------------------------------------------------------
+        when "1101111" => 
+            immediate <= instr(20) & instr(10 downto 1) & instr(11) & instr(19 downto 12);
+---------------------------------------------------------------------------------------------------
+------- B TYPE ------------------------------------------------------------------------------------        
+        when "1100011" =>
+            immediate <= instr(12) & instr(10 downto 5) & instr(4 downto 1) & instr(11);
+---------------------------------------------------------------------------------------------------
+------- S TYPE ------------------------------------------------------------------------------------        
+        when "0100011" => 
+            immediate <= instr(11 downto 5) & instr(4 downto 0);
+---------------------------------------------------------------------------------------------------
+------- I TYPE ------------------------------------------------------------------------------------       
+        when "0010011" =>
+            immediate <= instr(11 downto 0);
+---------------------------------------------------------------------------------------------------
+    end case;
+end process;
+
 end Behavioral;
-
--- Different possible implementation
---with opcode select
---op_class <= "10000" when "0110011" | "0010011", -- R type and I type (OP)
---            "01000" when "0100011", -- S type (Store)
---            "00100" when "0000011", -- I type (Load)
---            "00010" when "1100011", -- B type (Branch)
---            "00001" when "1101111", -- J type (Jump)
---            "00000" when others;
---end Behavioral;
-
 
