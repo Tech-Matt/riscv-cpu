@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -41,8 +41,8 @@ entity decoder is
     alu_opcode: out std_logic_vector(2 downto 0); -- func3 in this case
     cond_opcode: out std_logic_vector(2 downto 0); -- func3 in this case
     rd: out std_logic_vector(4 downto 0); -- Destination Register Address (5 bit = 32 registers)
-    rs1: out std_logic_vector(4 downto 0); -- Source Register 1
-    rs2: out std_logic_vector(4 downto 0); -- Source Register 2
+    rs1: out std_logic_vector(4 downto 0); -- Source Register 1 address
+    rs2: out std_logic_vector(4 downto 0); -- Source Register 2 address
     immediate: out std_logic_vector(11 downto 0)
   );
 end decoder;
