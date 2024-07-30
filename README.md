@@ -19,6 +19,7 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 - [ ] Write table of signals for instruction decode
 - [ ] Create alu_opcode table
 - [ ] You could add flags to alu operations
+- [ ] Change color of other images
 
 
 <ins> To be done one day in the future </ins>
