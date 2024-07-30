@@ -10,18 +10,17 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 ## Todo
 
 <ins> Max Priority </ins>
-- [ ] Remember to pur default variable value everywhere, otherwise latches could be inferred
-- [ ] Write Instruction Decode
-- [ ] Write block to exctract immediate based on opcode
-- [ ] Write doc for instruction decode
 
 <ins> Normal </ins>
-
-<ins> To be done one day in the future </ins>
+- [ ] Remember to pur default variable value everywhere, otherwise latches could be inferred
+- [ ] Probably some registers needs to be added to the instruction decode
 - [ ] Do an Instruction Decode testbench
-- [ ] Chose a standard for variables in vhdl, uppercase or lowercase?
 - [ ] Write table of signals for instruction fetch
 - [ ] Write table of signals for instruction decode
+
+
+<ins> To be done one day in the future </ins>
+- [ ] Chose a standard for variables in vhdl, uppercase or lowercase?
 - [ ] See in instruction decode if it is best to keep std_logic_vector for some signals, or change it to unsigned
 - [ ] See if concurrent execution can be converted to processes or vice versa
 
