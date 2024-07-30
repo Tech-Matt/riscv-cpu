@@ -17,6 +17,7 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 - [ ] Do an Instruction Decode testbench
 - [ ] Write table of signals for instruction fetch
 - [ ] Write table of signals for instruction decode
+- [ ] Create alu_opcode table
 - [ ] You could add flags to alu operations
 
 
