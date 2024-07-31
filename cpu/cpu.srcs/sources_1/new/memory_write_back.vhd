@@ -81,7 +81,35 @@ data_mem : blk_mem_gen_1
     douta => mem_out
   ); 
   
--- WRITE ENABLE MULTIPLEXER
+-- WRITE ENABLE 
+process (op_class, mem_we) is
+begin
+    wea <= "1" when op_class = "01000" and mem_we = '1' else "0"; -- Only STORE operations
+end process;
 
+-- DESTINATION REGISTER VALUE MULTIPLEXER
+process (op_class, next_pc, alu_result, mem_out) is
+begin
+    if op_class = "00100" then -- LOAD
+        rd_value <= unsigned(mem_out);
+    elsif op_class = "10000" then -- OPERATION
+        rd_value <= alu_result;
+    elsif op_class = "00001" then -- JUMP
+        rd_value <= next_pc;
+    end if;
+end process;
+-- PROGRAM COUNTER MULTIPLEXER
+process (op_class, branch_cond, next_pc, alu_result) is
+begin
+    if op_class in ("10000", "01000", "00100") then -- IF OP, LOAD, STORE
+        pc_out <= next_pc;
+    elsif op_class = "00001" then -- JUMP
+        pc_out <= alu_result;
+    elsif op_class = "00010" and branch_cond = '1' then -- Take branch
+        pc_out <= alu_result;
+    else -- Don't take branch
+        pc_out < next_pc;
+    end if;
+end process;
 
 end Behavioral;

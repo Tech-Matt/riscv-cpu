@@ -73,7 +73,7 @@ begin
             op_class <= "10000";
         when "0100011" => -- S type (Store)
             op_class <= "01000";
-        when "0000011" => -- I type (Load)
+        when "0000011" => -- L type (Load)
             op_class <= "00100";
         when "1100011" => -- B type (Branch)
             op_class <= "00010";
