@@ -33,6 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity execute is
   Port ( 
+        -- INPUT
         clk: in std_logic;
         rs1_val: in unsigned(31 downto 0);
         rs2_val: in unsigned(31 downto 0);
@@ -42,7 +43,7 @@ entity execute is
         pc: in unsigned(31 downto 0);
         a_sel: in std_logic; -- mux a
         b_sel: in std_logic; -- mux b
-        
+        -- OUTPUT
         branch_cond: out std_logic;
         alu_pre_result: out unsigned(31 downto 0);
         alu_result: out unsigned(31 downto 0)

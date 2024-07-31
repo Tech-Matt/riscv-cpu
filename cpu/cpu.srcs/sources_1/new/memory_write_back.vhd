@@ -64,7 +64,7 @@ COMPONENT blk_mem_gen_1
   );
 END COMPONENT;
 
--- SIGNAL DECLARATIONS
+-- SIGNALS DECLARATIONS
 signal wea: std_logic_vector(0 downto 0); -- MUX between mem_we and op_class
 signal mem_out: std_logic_vector(31 downto 0); -- Value coming out of the memory
 
