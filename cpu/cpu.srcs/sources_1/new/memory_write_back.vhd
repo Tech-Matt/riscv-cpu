@@ -76,7 +76,7 @@ data_mem : blk_mem_gen_1
     clka => clk,
     rsta => rsta,
     wea => wea,
-    addra => alu_pre_result,
+    addra => alu_pre_result(11 downto 0),
     dina => rs2_val,
     douta => mem_out
   ); 
@@ -101,14 +101,14 @@ end process;
 -- PROGRAM COUNTER MULTIPLEXER
 process (op_class, branch_cond, next_pc, alu_result) is
 begin
-    if op_class in ("10000", "01000", "00100") then -- IF OP, LOAD, STORE
+    if op_class = "10000" or op_class = "01000" or op_class = "00100" then -- IF OP, LOAD, STORE
         pc_out <= next_pc;
     elsif op_class = "00001" then -- JUMP
         pc_out <= alu_result;
-    elsif op_class = "00010" and branch_cond = '1' then -- Take branch
+    elsif op_class = "00010" and branch_cond = '1' then -- Take BRANCH
         pc_out <= alu_result;
-    else -- Don't take branch
-        pc_out < next_pc;
+    else -- Don't take BRANCH
+        pc_out <= next_pc;
     end if;
 end process;
 

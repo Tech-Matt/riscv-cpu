@@ -38,7 +38,7 @@ entity instruction_fetch is
     clk: in std_logic; -- runs registers of PC, block ram, NPC e IR
     pc_in: in unsigned(31 downto 0); -- Program counter coming from other stages
     load_en: in std_logic; -- Activate or deactivate write on PC register (active low)
-    res: in std_logic;  -- sync reset for instruction memory (active high)
+    res: in std_logic;  -- synchronous reset for instruction memory (active high)
     
     -- OUTPUTS
     instr_out: out std_logic_vector(31 downto 0); -- Instruction fetched from instruction memory
@@ -75,21 +75,34 @@ instr_mem : blk_mem_gen_0
     douta => instr
   );
   
-  -- Update pc register
-process (clk)
-variable new_pc : unsigned(31 downto 0);
+-- UPDATE INTERNAL PC REGISTER
+process (clk) is
 begin
-    if(rising_edge(clk)) then
-        if(load_en = '0') then
-            new_pc := pc_in; -- Update variable
-            pc <= new_pc; -- Update internal signal
-            current_pc <= new_pc; -- This signal goes to the next stage 
-            next_pc <= new_pc + 4; -- This tootoo
+    if rising_edge(clk) then
+        if res = '1' then -- Reset PC
+            pc <= (others => '0');
+        elsif load_en = '0' then
+            pc <= pc_in;
         end if;
     end if;
 end process;
-  
-instr_out <= instr; -- As soon as the PC is updated I'll read the instruction memory with 1 clock cycle delay
-  
 
+-- UPDATE NEXT PC
+process (clk) is
+begin 
+    if rising_edge(clk) then
+        next_pc <= pc + 4;
+    end if;
+end process;
+
+-- UPDATE CURRENT PC REGISTER
+process (clk) is
+begin
+    if rising_edge(clk) then
+        current_pc <= pc;
+    end if;
+end process;
+  
+instr_out <= instr; 
+  
 end Behavioral;
