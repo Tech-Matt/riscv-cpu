@@ -76,20 +76,20 @@ instr_mem : blk_mem_gen_0
   );
   
   -- Update pc register
-  program_counter: process (clk)
-    variable new_pc : unsigned(31 downto 0);
-  begin
-  if(rising_edge(clk)) then
-    if(load_en = '0') then
-        new_pc := pc_in; -- Update variable
-        pc <= new_pc; -- Update internal signal
-        current_pc <= new_pc; -- This signal goes to the next stage 
-        next_pc <= new_pc + 4; -- This tootoo
+process (clk)
+variable new_pc : unsigned(31 downto 0);
+begin
+    if(rising_edge(clk)) then
+        if(load_en = '0') then
+            new_pc := pc_in; -- Update variable
+            pc <= new_pc; -- Update internal signal
+            current_pc <= new_pc; -- This signal goes to the next stage 
+            next_pc <= new_pc + 4; -- This tootoo
+        end if;
     end if;
-  end if;
-  end process;
+end process;
   
-  instr_out <= instr; -- As soon as the PC is updated I'll read the instruction memory with 1 clock cycle delay
+instr_out <= instr; -- As soon as the PC is updated I'll read the instruction memory with 1 clock cycle delay
   
 
 end Behavioral;

@@ -45,7 +45,6 @@ entity instruction_decode is
         -- OUTPUTS
         rs1_val: out unsigned(31 downto 0); -- Register source 1 value
         rs2_val: out unsigned (31 downto 0); -- Register source 2 value
-        rd: out unsigned(31 downto 0); -- Destination register address
         immediate: out unsigned(31 downto 0); -- 32 bit extended Immediate
         op_class: out std_logic_vector(4 downto 0); -- Operation type (Encoded ONE-HOT OSLBJ)
         alu_opcode: out std_logic_vector(2 downto 0); 
@@ -87,7 +86,8 @@ END COMPONENT;
 
 signal rs1: std_logic_vector(4 downto 0); -- Register Source A Address
 signal rs2: std_logic_vector(4 downto 0); -- Register Source B Address
-shared variable imm_12: unsigned(11 downto 0);
+signal rd: std_logic_vector(4 downto 0); -- Register Destination Address
+shared variable imm_12: std_logic_vector(11 downto 0);
 shared variable imm_32: unsigned(31 downto 0);
 shared variable r_input: unsigned(31 downto 0) := (others => '0'); -- MULTIPLEX BETWEEN RS1 AND RD
 
