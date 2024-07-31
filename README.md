@@ -30,5 +30,4 @@ Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details
 
 
 ## Implementation Comments
-- Decode implementation is difficult to read, make it more readable either by indentation or changing completely the structure.
 
