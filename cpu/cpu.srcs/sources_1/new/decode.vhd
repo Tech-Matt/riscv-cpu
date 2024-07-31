@@ -43,7 +43,9 @@ entity decoder is
     rd: out std_logic_vector(4 downto 0); -- Destination Register Address (5 bit = 32 registers)
     rs1: out std_logic_vector(4 downto 0); -- Source Register 1 address
     rs2: out std_logic_vector(4 downto 0); -- Source Register 2 address
-    immediate: out std_logic_vector(11 downto 0)
+    immediate: out std_logic_vector(11 downto 0);
+    a_sel: out std_logic;
+    b_sel: out std_logic;
   );
 end decoder;
 
@@ -63,29 +65,44 @@ opcode <= instr(6 downto 0);
 func3 <= instr(14 downto 12);
 func7 <= instr(31 downto 25);
 
--- ASSIGN OPERATION CLASS BASED ON OPCODE
+-- ASSIGN OPERATION CLASS AND A_SEL / B_SEL BASED ON OPCODE
+-- a_sel = {0: pc, 1: rs1_value}
+-- b_sel = {0: immediate, 1: rs2_value}
 process(opcode)
 begin
     op_class <= "00000"; -- Default value
-
     case opcode is
-        when "0110011" | "0010011" => -- R type and I type (OP)
+        when "0110011" => -- R type (OP)
             op_class <= "10000";
+            a_sel <= '1';
+            b_sel <= '1';
+        when "0010011" => -- I TYPE (OP)
+            op_class <= "10000";
+            a_sel <= '1';
+            b_sel <= '0';
         when "0100011" => -- S type (Store)
             op_class <= "01000";
+            a_sel <= '1';
+            b_sel <= '0';
         when "0000011" => -- L type (Load)
             op_class <= "00100";
+            a_sel <= '1';
+            b_sel <= '0';
         when "1100011" => -- B type (Branch)
             op_class <= "00010";
+            a_sel <= '0';
+            b_sel <= '0';
         when "1101111" => -- J type (Jump)
             op_class <= "00001";
+            a_sel <= '0';
+            b_sel <= '0';
         when others =>
             op_class <= "00000";
     end case;
 end process;
 
 
--- ASSIGN CONDITIONAL OPCODE AND ALU OPCODE BASED ON FUNC3 / FUNC7
+-- ASSIGN CONDITIONAL OPCODE AND ALU OPCODE AND A_SEL / B_SEL BASED ON FUNC3 / FUNC7
 process(opcode, func3, func7)
 begin
     alu_opcode <= "000"; -- Default ALU opcode
@@ -99,7 +116,7 @@ begin
                     if func7 = "0100000" then
                         alu_opcode <= "010"; -- SUB
                     else
-                        alu_opcode <= "000"; -- ADD
+                        alu_opcode <= "000"; -- ADD    
                     end if;
                 when "100" => alu_opcode <= "100"; -- XOR
                 when "110" => alu_opcode <= "110"; -- OR

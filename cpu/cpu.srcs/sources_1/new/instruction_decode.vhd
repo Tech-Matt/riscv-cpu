@@ -38,17 +38,19 @@ entity instruction_decode is
         pc: in unsigned(31 downto 0); -- Current Program counter
         next_pc: in unsigned(31 downto 0); -- Next program counter
         instr: in std_logic_vector (31 downto 0); -- Instruction coming from Instruction Fetch stage
-        write_en: in std_logic; -- Write emable for the register file
-        rd_value: in unsigned(31 downto 0); -- Possible value to be written to register (chosen by next stages)
+        write_en: in std_logic; -- Write enable for the register file
+        rd_value: in unsigned(31 downto 0); -- Possible value to be written to register (coming from write back)
         rd_wr_enable: in std_logic; -- Choose whether to read or write to register file (0 = read, 1 = write)
         
         -- OUTPUTS
-        rs1_val: out unsigned(31 downto 0); -- Register source 1 value
-        rs2_val: out unsigned (31 downto 0); -- Register source 2 value
+        rs1_val: out std_logic_vector(31 downto 0); -- Register source 1 value
+        rs2_val: out std_logic_vector (31 downto 0); -- Register source 2 value
         immediate: out unsigned(31 downto 0); -- 32 bit extended Immediate
         op_class: out std_logic_vector(4 downto 0); -- Operation type (Encoded ONE-HOT OSLBJ)
         alu_opcode: out std_logic_vector(2 downto 0); 
-        cond_opcode: out std_logic_vector(2 downto 0)
+        cond_opcode: out std_logic_vector(2 downto 0);
+        a_sel: out std_logic; -- Controls mux A in execute stage
+        b_sel: out std_logic -- Controls mux B in execute stage
         );
 end instruction_decode;
 
@@ -80,17 +82,25 @@ COMPONENT decoder
     rd: out std_logic_vector(4 downto 0);
     rs1: out std_logic_vector(4 downto 0);
     rs2: out std_logic_vector(4 downto 0);
-    immediate: out std_logic_vector(11 downto 0)
+    immediate: out std_logic_vector(11 downto 0);
+    a_sel: out std_logic;
+    b_sel: out std_logic
   );
 END COMPONENT;
 
 signal rs1: std_logic_vector(4 downto 0); -- Register Source A Address
 signal rs2: std_logic_vector(4 downto 0); -- Register Source B Address
 signal rd: std_logic_vector(4 downto 0); -- Register Destination Address
-shared variable imm_12: std_logic_vector(11 downto 0);
-shared variable imm_32: unsigned(31 downto 0);
-shared variable r_input: unsigned(31 downto 0) := (others => '0'); -- MULTIPLEX BETWEEN RS1 AND RD
+signal imm_12: std_logic_vector(11 downto 0);
+signal imm_32: unsigned(31 downto 0);
+signal r_input: std_logic_vector(4 downto 0);
 
+-- Unregistered outputs
+signal op_c: std_logic_vector(4 downto 0); --op class
+signal alu_op: std_logic_vector(2 downto 0); -- alu opcode
+signal cond_op: std_logic_vector(2 downto 0); -- conditional opcode
+signal a: std_logic; -- a_sel
+signal b: std_logic; -- b_sel
 
 begin
 
@@ -98,48 +108,63 @@ begin
 process(rd_wr_enable) is
 begin
     if rd_wr_enable = '0' then
-        r_input := unsigned(rs1);
+        r_input <= rs1;
     else
-        r_input := unsigned(rd);
+        r_input <= rd;
     end if;
 end process;
 
 dec: decoder
   PORT MAP (
     instr => instr,
-    op_class => op_class,
-    alu_opcode => alu_opcode,
-    cond_opcode => cond_opcode,
+    op_class => op_c,
+    alu_opcode => alu_op,
+    cond_opcode => cond_op,
     rd => rd,
     rs1 => rs1,
     rs2 => rs2,
-    immediate => imm_12
+    immediate => imm_12,
+    a_sel => a,
+    b_sel => b
   );
 
 register_file: dist_mem_gen_0
   PORT MAP (
-    a => rs1, -- Read Address of RS_A
-    d => rd_value, -- Data input for write operations
+    a => r_input, -- Read Address of RS_A
+    d => std_logic_vector(rd_value), -- Data input for write operations
     dpra => rs2, -- Read Address of RS_B
     clk => clk,
     we => write_en, -- Write enable
     qspo => rs1_val, -- RS_A Data Output
-    qdpo => rs_val -- RS_B Data Output
+    qdpo => rs2_val -- RS_B Data Output
   );
 
--- IMMEDIATE 32 BIT EXTENSION
-process(imm_12) is
+-- IMMEDIATE 32 BIT EXTENSION REGISTERED
+process(clk)
 begin
-    -- Perform sign extension
-    if imm12(11) = '0' then
-      extended_imm := signed("00000000000000000000" & imm12); -- Zero extend if MSB is 0
-    else
-      extended_imm := signed("11111111111111111111" & imm12); -- Sign extend if MSB is 1
-    end if;
-    
-    -- Assign the extended immediate to the output
-    immediate <= extended_imm;
+    if rising_edge(clk) then
+        -- Perform sign extension
+        if imm_12(11) = '0' then
+            imm_32 <= unsigned("00000000000000000000" & imm_12); -- Zero extend if MSB is 0
+        else
+            imm_32 <= unsigned("11111111111111111111" & imm_12); -- Sign extend if MSB is 1
+        end if;
 
-end process; 
+        -- Assign the extended immediate to the output
+        immediate <= imm_32;
+    end if;
+end process;
+
+-- REGISTERED PARAMETERS OUTPUT
+process (clk) is
+begin
+    if rising_edge(clk) then
+        op_class <= op_c;
+        alu_opcode <= alu_op;
+        cond_opcode <= cond_op;
+        a_sel <= a;
+        b_sel <= b;
+    end if;
+end process;
 
 end Behavioral;
