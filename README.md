@@ -212,6 +212,9 @@ The Memory and Write Back stage uses a data memory component for reading from an
 | wea           | internal  | std_logic_vector(0 downto 0)| Write enable signal for the memory (multiplexed between `mem_we` and `op_class`).           |
 | mem_out       | internal  | std_logic_vector(31 downto 0)| Value coming out of the memory.                                                            |
 
+## Instruction Fetch TestBench
+![image](https://github.com/user-attachments/assets/d7a6e725-8231-4d8f-9002-795dc31be412)
+
 
 ## Todo
 
