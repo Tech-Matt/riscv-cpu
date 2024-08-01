@@ -13,6 +13,10 @@ The CPU I will implement will have the following properties:
 - Instruction Memory implemented as a single port ROM BRAM;
 - Data Memory Implemented as a single port RAM BRAM;
 
+## Implemented Instructions
+For now I am going to implement a small subset of the RV32I ISA. This is a comprehensive list:
+![image](https://github.com/user-attachments/assets/344f46cc-ff0b-4dea-9e80-2a36d46a272f)
+
 ## Instruction Memory
 Instruction memory will consist of a ROM BRAM (Read only memory Block RAM), with a width of 32 bits (instruction size, RISC-V like) and a depth of 4096 instructions. The block memory is defined as a single port ROM, that's because we are only interested in reading the hardcoded RISC-V instructions inside of it. The BRAM will have an enable pin and a synchronous reset pin (will only work when memory is enabled). 
 The IP will have an embedded output register where the Instruction to be decoded is saved before the instruction decode stage.
@@ -216,6 +220,112 @@ The Memory and Write Back stage uses a data memory component for reading from an
 ![image](https://github.com/user-attachments/assets/d7a6e725-8231-4d8f-9002-795dc31be412)
 
 ## Instruction Decode TestBench
+![image](https://github.com/user-attachments/assets/546ff0b5-c9be-4145-8e6e-b97caa13b904)
+
+## Execute Stage TestBench
+
+## Memory and Write-Back TestBench
+
+## State Machine
+
+## Synthesys
+![image](https://github.com/user-attachments/assets/90489b6c-ec44-44d2-b3d5-822d6674f506)
+
+### Synthesis Design Report Summary
+
+**Tool Information:**
+- **Tool Version:** Vivado v.2023.2 (win64) Build 4029153
+- **Date:** Thu Aug 1 09:32:52 2024
+- **Command:** report_utilization
+- **Design:** top_level
+- **Device:** xc7z020clg484-1
+- **Design State:** Synthesized
+
+### Utilization Design Information:
+
+#### 1. Slice Logic
+| Site Type            | Used | Available | Util% |
+|----------------------|------|-----------|-------|
+| Slice LUTs           | 235  | 53200     | 0.44  |
+| LUT as Logic         | 235  | 53200     | 0.44  |
+| LUT as Memory        | 0    | 17400     | 0.00  |
+| Slice Registers      | 273  | 106400    | 0.26  |
+| Register as Flip Flop| 206  | 106400    | 0.19  |
+| Register as Latch    | 67   | 106400    | 0.06  |
+| F7 Muxes             | 0    | 26600     | 0.00  |
+| F8 Muxes             | 0    | 13300     | 0.00  |
+
+
+#### 2. Memory
+| Site Type       | Used | Available | Util% |
+|-----------------|------|-----------|-------|
+| Block RAM Tile  | 0    | 140       | 0.00  |
+| RAMB36/FIFO     | 0    | 140       | 0.00  |
+| RAMB18          | 0    | 280       | 0.00  |
+
+#### 3. DSP
+| Site Type | Used | Available | Util% |
+|-----------|------|-----------|-------|
+| DSPs      | 0    | 220       | 0.00  |
+
+#### 4. IO and GT Specific
+| Site Type            | Used | Available | Util% |
+|----------------------|------|-----------|-------|
+| Bonded IOB           | 1    | 200       | 0.50  |
+| Bonded IPADs         | 0    | 2         | 0.00  |
+| Bonded IOPADs        | 0    | 130       | 0.00  |
+| PHY_CONTROL          | 0    | 4         | 0.00  |
+| PHASER_REF           | 0    | 4         | 0.00  |
+| OUT_FIFO             | 0    | 16        | 0.00  |
+| IN_FIFO              | 0    | 16        | 0.00  |
+| IDELAYCTRL           | 0    | 4         | 0.00  |
+| IBUFDS               | 0    | 192       | 0.00  |
+| PHASER_OUT/PHASER_OUT_PHY | 0 | 16     | 0.00  |
+| PHASER_IN/PHASER_IN_PHY   | 0 | 16     | 0.00  |
+| IDELAYE2/IDELAYE2_FINEDELAY | 0 | 200 | 0.00  |
+| ILOGIC               | 0    | 200       | 0.00  |
+| OLOGIC               | 0    | 200       | 0.00  |
+
+#### 5. Clocking
+| Site Type  | Used | Available | Util% |
+|------------|------|-----------|-------|
+| BUFGCTRL   | 3    | 32        | 9.38  |
+| BUFIO      | 0    | 16        | 0.00  |
+| MMCME2_ADV | 0    | 4         | 0.00  |
+| PLLE2_ADV  | 0    | 4         | 0.00  |
+| BUFMRCE    | 0    | 8         | 0.00  |
+| BUFHCE     | 0    | 72        | 0.00  |
+| BUFR       | 0    | 16        | 0.00  |
+
+#### 7. Primitives
+| Ref Name | Used | Functional Category |
+|----------|------|---------------------|
+| FDRE     | 206  | Flop & Latch        |
+| LUT3     | 98   | LUT                 |
+| LUT4     | 80   | LUT                 |
+| LUT5     | 69   | LUT                 |
+| LDCE     | 67   | Flop & Latch        |
+| LUT6     | 52   | LUT                 |
+| CARRY4   | 23   | CarryLogic          |
+| LUT2     | 5    | LUT                 |
+| BUFG     | 3    | Clock               |
+| LUT1     | 2    | LUT                 |
+| IBUF     | 1    | IO                  |
+
+#### 8. Black Boxes
+| Ref Name       | Used |
+|----------------|------|
+| dist_mem_gen_0 | 1    |
+| blk_mem_gen_1  | 1    |
+| blk_mem_gen_0  | 1    |
+
+
+
+## Performance Evaluation
+
+## Timing Analysis
+
+## Power Consumption
 
 
 ## Todo
