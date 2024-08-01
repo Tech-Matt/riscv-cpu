@@ -106,6 +106,112 @@ The Decoder block is part of the Instruction Decode stage. It takes a 32-bit ins
 | func7         | internal  | std_logic_vector(6 downto 0)| Function field from the instruction (bits 31-25).                                          |
 | opcode        | internal  | std_logic_vector(6 downto 0)| Opcode field from the instruction (bits 6-0).                                              |
 
+## Execution Stage
+![image](https://github.com/user-attachments/assets/84ad0f9f-7cd6-40b8-9843-60cffdd58f85)
+
+The Execution stage is responsible for performing arithmetic and logical operations, as well as evaluating branch conditions. It takes operands from the previous stage, applies the necessary operations using the ALU and comparator components, and outputs the results and branch conditions.
+
+- **Inputs:**
+  - `clk`: The clock signal.
+  - `rs1_val`: The value of the first source register.
+  - `rs2_val`: The value of the second source register.
+  - `immediate`: The 32-bit immediate value.
+  - `cond_opcode`: The conditional operation code.
+  - `alu_opcode`: The ALU operation code.
+  - `pc`: The program counter value.
+  - `a_sel`: Control signal for selecting between `pc` and `rs1_val` for the ALU.
+  - `b_sel`: Control signal for selecting between `immediate` and `rs2_val` for the ALU.
+
+- **Outputs:**
+  - `branch_cond`: The branch condition output.
+  - `alu_pre_result`: The intermediate ALU result.
+  - `alu_result`: The final ALU result.
+
+The Execution stage uses two main components: the ALU (Arithmetic Logic Unit) and the comparator. The ALU performs arithmetic and logical operations based on the `alu_opcode`, while the comparator evaluates branch conditions based on the `cond_opcode`. Multiplexers controlled by `a_sel` and `b_sel` are used to select the appropriate operands for the ALU.
+
+### Signal Table
+
+#### Execution Stage
+
+| Signal Name        | Direction | Type                        | Function                                                                                |
+|--------------------|-----------|-----------------------------|-----------------------------------------------------------------------------------------|
+| clk                | in        | std_logic                   | Clock signal.                                                                           |
+| rs1_val            | in        | unsigned(31 downto 0)       | Value of the first source register.                                                     |
+| rs2_val            | in        | unsigned(31 downto 0)       | Value of the second source register.                                                    |
+| immediate          | in        | unsigned(31 downto 0)       | 32-bit immediate value.                                                                 |
+| cond_opcode        | in        | std_logic_vector(2 downto 0)| Conditional operation code.                                                             |
+| alu_opcode         | in        | std_logic_vector(2 downto 0)| ALU operation code.                                                                     |
+| pc                 | in        | unsigned(31 downto 0)       | Program counter value.                                                                  |
+| a_sel              | in        | std_logic                   | Control signal for selecting between `pc` and `rs1_val` for the ALU.                    |
+| b_sel              | in        | std_logic                   | Control signal for selecting between `immediate` and `rs2_val` for the ALU.             |
+| branch_cond        | out       | std_logic                   | Branch condition output.                                                                |
+| alu_pre_result     | out       | unsigned(31 downto 0)       | Intermediate ALU result.                                                                |
+| alu_result         | out       | unsigned(31 downto 0)       | Final ALU result.                                                                       |
+| branch_cond_unregistered | internal  | std_logic                   | Unregistered branch condition signal.                                                   |
+| mux_a              | internal  | unsigned(31 downto 0)       | Multiplexer output selecting between `pc` and `rs1_val`.                                |
+| mux_b              | internal  | unsigned(31 downto 0)       | Multiplexer output selecting between `immediate` and `rs2_val`.                         |
+
+#### ALU Component
+
+| Signal Name        | Direction | Type                        | Function                                                                                |
+|--------------------|-----------|-----------------------------|-----------------------------------------------------------------------------------------|
+| alu_opcode         | in        | std_logic_vector(2 downto 0)| ALU operation code.                                                                     |
+| rs1_val            | in        | unsigned(31 downto 0)       | Value of the first source register.                                                     |
+| rs2_val            | in        | unsigned(31 downto 0)       | Value of the second source register.                                                    |
+| value_out          | out       | unsigned(31 downto 0)       | Result of the ALU operation.                                                            |
+
+#### Comparator Component
+
+| Signal Name        | Direction | Type                        | Function                                                                                |
+|--------------------|-----------|-----------------------------|-----------------------------------------------------------------------------------------|
+| rs1_val            | in        | unsigned(31 downto 0)       | Value of the first source register.                                                     |
+| rs2_val            | in        | unsigned(31 downto 0)       | Value of the second source register.                                                    |
+| cond_opcode        | in        | std_logic_vector(2 downto 0)| Conditional operation code.                                                             |
+| branch_cond        | out       | std_logic                   | Branch condition output (1 = branch, 0 = don't branch).                                 |
+
+
+## Memory and Write Back Stage
+![image](https://github.com/user-attachments/assets/eacd144e-27fc-4129-b8ec-fc4e82c3cdfc)
+
+The Memory and Write Back stage is responsible for accessing the data memory and writing back the results to the destination registers. It handles memory read/write operations and updates the program counter based on the operation type and branch conditions.
+
+- **Inputs:**
+  - `clk`: The clock signal.
+  - `branch_cond`: Branch condition signal.
+  - `next_pc`: The next program counter value.
+  - `alu_result`: The result from the ALU.
+  - `alu_pre_result`: The intermediate ALU result.
+  - `op_class`: Operation class indicating the type of operation.
+  - `mem_we`: Memory write enable signal.
+  - `rs2_val`: The value of the second source register.
+  - `rsta`: Asynchronous reset for the memory.
+
+- **Outputs:**
+  - `pc_out`: The updated program counter value.
+  - `rd_value`: The value to be written back to the destination register.
+
+The Memory and Write Back stage uses a data memory component for reading from and writing to memory. It also includes multiplexers to determine the correct values for the program counter and the destination register based on the operation class and branch conditions.
+
+### Signal Table
+
+#### Memory and Write Back Stage
+
+| Signal Name   | Direction | Type                        | Function                                                                                   |
+|---------------|-----------|-----------------------------|--------------------------------------------------------------------------------------------|
+| clk           | in        | std_logic                   | Clock signal.                                                                              |
+| branch_cond   | in        | std_logic                   | Branch condition signal.                                                                   |
+| next_pc       | in        | unsigned(31 downto 0)       | The next program counter value.                                                            |
+| alu_result    | in        | unsigned(31 downto 0)       | The result from the ALU.                                                                   |
+| alu_pre_result| in        | std_logic_vector(31 downto 0)| The intermediate ALU result.                                                               |
+| op_class      | in        | std_logic_vector(4 downto 0)| Operation class indicating the type of operation.                                          |
+| mem_we        | in        | std_logic                   | Memory write enable signal.                                                                |
+| rs2_val       | in        | std_logic_vector(31 downto 0)| The value of the second source register.                                                   |
+| rsta          | in        | std_logic                   | Asynchronous reset for the memory.                                                         |
+| pc_out        | out       | unsigned(31 downto 0)       | The updated program counter value.                                                         |
+| rd_value      | out       | unsigned(31 downto 0)       | The value to be written back to the destination register.                                   |
+| wea           | internal  | std_logic_vector(0 downto 0)| Write enable signal for the memory (multiplexed between `mem_we` and `op_class`).           |
+| mem_out       | internal  | std_logic_vector(31 downto 0)| Value coming out of the memory.                                                            |
+
 
 ## Todo
 
