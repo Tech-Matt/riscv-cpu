@@ -223,6 +223,7 @@ The Memory and Write Back stage uses a data memory component for reading from an
 ![image](https://github.com/user-attachments/assets/546ff0b5-c9be-4145-8e6e-b97caa13b904)
 
 ## Execute Stage TestBench
+![image](https://github.com/user-attachments/assets/d9d2b644-2bd1-4279-824e-e5486859176d)
 
 ## Memory and Write-Back TestBench
 
@@ -268,35 +269,6 @@ The Memory and Write Back stage uses a data memory component for reading from an
 |-----------|------|-----------|-------|
 | DSPs      | 0    | 220       | 0.00  |
 
-#### 4. IO and GT Specific
-| Site Type            | Used | Available | Util% |
-|----------------------|------|-----------|-------|
-| Bonded IOB           | 1    | 200       | 0.50  |
-| Bonded IPADs         | 0    | 2         | 0.00  |
-| Bonded IOPADs        | 0    | 130       | 0.00  |
-| PHY_CONTROL          | 0    | 4         | 0.00  |
-| PHASER_REF           | 0    | 4         | 0.00  |
-| OUT_FIFO             | 0    | 16        | 0.00  |
-| IN_FIFO              | 0    | 16        | 0.00  |
-| IDELAYCTRL           | 0    | 4         | 0.00  |
-| IBUFDS               | 0    | 192       | 0.00  |
-| PHASER_OUT/PHASER_OUT_PHY | 0 | 16     | 0.00  |
-| PHASER_IN/PHASER_IN_PHY   | 0 | 16     | 0.00  |
-| IDELAYE2/IDELAYE2_FINEDELAY | 0 | 200 | 0.00  |
-| ILOGIC               | 0    | 200       | 0.00  |
-| OLOGIC               | 0    | 200       | 0.00  |
-
-#### 5. Clocking
-| Site Type  | Used | Available | Util% |
-|------------|------|-----------|-------|
-| BUFGCTRL   | 3    | 32        | 9.38  |
-| BUFIO      | 0    | 16        | 0.00  |
-| MMCME2_ADV | 0    | 4         | 0.00  |
-| PLLE2_ADV  | 0    | 4         | 0.00  |
-| BUFMRCE    | 0    | 8         | 0.00  |
-| BUFHCE     | 0    | 72        | 0.00  |
-| BUFR       | 0    | 16        | 0.00  |
-
 #### 7. Primitives
 | Ref Name | Used | Functional Category |
 |----------|------|---------------------|
@@ -319,7 +291,7 @@ The Memory and Write Back stage uses a data memory component for reading from an
 | blk_mem_gen_1  | 1    |
 | blk_mem_gen_0  | 1    |
 
-
+## Implementation
 
 ## Performance Evaluation
 
