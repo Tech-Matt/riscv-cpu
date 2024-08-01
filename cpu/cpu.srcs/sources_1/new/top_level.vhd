@@ -70,8 +70,8 @@ COMPONENT instruction_decode is
         rd_wr_enable: in std_logic;
         
         -- OUTPUTS
-        rs1_val: out std_logic_vector(31 downto 0);
-        rs2_val: out std_logic_vector (31 downto 0);
+        rs1_val: out unsigned(31 downto 0);
+        rs2_val: out unsigned(31 downto 0);
         immediate: out unsigned(31 downto 0);
         op_class: out std_logic_vector(4 downto 0);
         alu_opcode: out std_logic_vector(2 downto 0); 
@@ -95,8 +95,8 @@ COMPONENT execute is
         b_sel: in std_logic; -- mux b
         -- OUTPUT
         branch_cond: out std_logic;
-        alu_pre_result: out unsigned(31 downto 0);
-        alu_result: out unsigned(31 downto 0)
+        alu_pre_result: out std_logic_vector(31 downto 0);
+        alu_result: out std_logic_vector(31 downto 0)
     );
 END COMPONENT;
 
@@ -106,7 +106,7 @@ COMPONENT memory_write_back is
     clk: in std_logic;
     branch_cond: in std_logic;
     next_pc: in unsigned(31 downto 0);
-    alu_result: in unsigned(31 downto 0);
+    alu_result: in std_logic_vector(31 downto 0);
     alu_pre_result: in std_logic_vector(31 downto 0);
     op_class: in std_logic_vector(4 downto 0);
     mem_we: in std_logic;
@@ -120,7 +120,6 @@ COMPONENT memory_write_back is
 END COMPONENT;
 
 -- INTERNAL SIGNALS:
-signal clk: std_logic;
 -- INSTRUCTION FETCH
 signal pc_in: unsigned(31 downto 0);
 signal load_en: std_logic; -- activate or deactivate write on PC Register (active low)
@@ -133,8 +132,8 @@ signal next_pc: unsigned(31 downto 0);
 signal write_en: std_logic; -- For writing on register file
 signal rd_value: unsigned(31 downto 0); -- Possible Value to be written to register
 signal rd_wr_enable: std_logic; -- Choose whether to read or write to register file (0 = read, 1 = write)
-signal rs1_val: std_logic_vector(31 downto 0);
-signal rs2_val: std_logic_vector(31 downto 0);
+signal rs1_val: unsigned(31 downto 0);
+signal rs2_val: unsigned(31 downto 0);
 signal immediate: unsigned(31 downto 0);
 signal op_class: std_logic_vector(4 downto 0);
 signal alu_opcode: std_logic_vector(2 downto 0);
@@ -144,12 +143,13 @@ signal b_sel: std_logic;
 ------------------------------------------------------------------------------------------
 -- EXECUTION
 signal branch_cond: std_logic;
-signal alu_pre_result: unsigned(31 downto 0);
-signal alu_result: unsigned(31 downto 0);
+signal alu_pre_result: std_logic_vector(31 downto 0);
+signal alu_result: std_logic_vector(31 downto 0);
 ------------------------------------------------------------------------------------------
 -- MEMORY AND WRITE BACK
 signal mem_we: std_logic;
 signal rsta: std_logic;
+signal rs2_val_std: std_logic_vector(31 downto 0);
 ------------------------------------------------------------------------------------------
 
 begin
@@ -182,7 +182,7 @@ begin
             next_state <= F;  -- Default to IF state
     end case;
 end process;
-
+ 
 
 -- INSTRUCTION FETCH INSTANTIATION
 InstrFetch: instruction_fetch
@@ -198,20 +198,20 @@ InstrFetch: instruction_fetch
 -- INSTRUCTION DECODE INSTANTIATION
 InstrDec: instruction_decode
     PORT MAP(
-        clk => clk,
+        clk => clk, 
         instr => instr_out,
         write_en => write_en,
         rd_value => rd_value,
         rd_wr_enable => rd_wr_enable,
         rs1_val => rs1_val,
-        rs2_val => rs2_val
+        rs2_val => rs2_val,
         immediate => immediate,
         op_class => op_class,
         alu_opcode => alu_opcode,
-        cond_opcode => cond_opcode
+        cond_opcode => cond_opcode,
         a_sel => a_sel,
-        b_sel => b_sel,
-    );
+        b_sel => b_sel
+    ); 
 -- EXECUTE INSTANTIATION
 Exec: execute
     PORT MAP(
@@ -238,11 +238,12 @@ Mem_WB: memory_write_back
         alu_pre_result => alu_pre_result,
         op_class => op_class,
         mem_we => mem_we,
-        rs2_val => rs2_val,
+        rs2_val => rs2_val_std,
         rsta => rsta,
         pc_out => pc_in,
         rd_value => rd_value
     );
  
-
+rs2_val_std <= std_logic_vector(rs2_val);
+ 
 end Behavioral;

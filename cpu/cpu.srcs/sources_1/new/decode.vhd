@@ -43,9 +43,9 @@ entity decoder is
     rd: out std_logic_vector(4 downto 0); -- Destination Register Address (5 bit = 32 registers)
     rs1: out std_logic_vector(4 downto 0); -- Source Register 1 address
     rs2: out std_logic_vector(4 downto 0); -- Source Register 2 address
-    immediate: out std_logic_vector(11 downto 0);
+    immediate: out std_logic_vector(19 downto 0);
     a_sel: out std_logic;
-    b_sel: out std_logic;
+    b_sel: out std_logic
   );
 end decoder;
 
@@ -144,6 +144,7 @@ begin
                 when others => null;
             end case;
 ---------------------------------------------------------------------------------------------------       
+        when others => null;
      end case;
 end process;
 
@@ -157,16 +158,21 @@ begin
 ---------------------------------------------------------------------------------------------------
 ------- B TYPE ------------------------------------------------------------------------------------        
         when "1100011" =>
-            immediate <= instr(12) & instr(10 downto 5) & instr(4 downto 1) & instr(11);
+            immediate <= (others => '0'); -- Zero extend to 20 bits
+            immediate(11 downto 0) <= instr(12) & instr(10 downto 5) & instr(4 downto 1) & instr(11);
 ---------------------------------------------------------------------------------------------------
 ------- S TYPE ------------------------------------------------------------------------------------        
         when "0100011" => 
-            immediate <= instr(11 downto 5) & instr(4 downto 0);
+            immediate <= (others => '0'); -- Zero extend to 20 bits
+            immediate(11 downto 0) <= instr(11 downto 5) & instr(4 downto 0);
 ---------------------------------------------------------------------------------------------------
 ------- I TYPE ------------------------------------------------------------------------------------       
         when "0010011" =>
-            immediate <= instr(11 downto 0);
+            immediate <= (others => '0'); -- Zero extend to 20 bits
+            immediate(11 downto 0) <= instr(11 downto 0);
 ---------------------------------------------------------------------------------------------------
+        when others =>
+            immediate <= (others => '0'); -- Default to zero
     end case;
 end process;
 

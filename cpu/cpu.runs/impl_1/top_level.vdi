@@ -1,0 +1,257 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Thu Aug  1 10:12:05 2024
+# Process ID: 12604
+# Current directory: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/impl_1
+# Command line: vivado.exe -log top_level.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top_level.tcl -notrace
+# Log file: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/impl_1/top_level.vdi
+# Journal file: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/impl_1\vivado.jou
+# Running On: la_bestia, OS: Windows, CPU Frequency: 3194 MHz, CPU Physical cores: 16, Host memory: 16312 MB
+#-----------------------------------------------------------
+source top_level.tcl -notrace
+create_project: Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 471.180 ; gain = 180.516
+Command: link_design -top top_level -part xc7z020clg484-1
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-454] Reading design checkpoint 'c:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.gen/sources_1/ip/dist_mem_gen_0/dist_mem_gen_0.dcp' for cell 'InstrDec/register_file'
+INFO: [Project 1-454] Reading design checkpoint 'c:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0.dcp' for cell 'InstrFetch/instr_mem'
+INFO: [Project 1-454] Reading design checkpoint 'c:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.gen/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1.dcp' for cell 'Mem_WB/data_mem'
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.033 . Memory (MB): peak = 935.309 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 63 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2023.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc]
+WARNING: [Vivado 12-584] No ports matched 'clock'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:78]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:78]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'clock'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:79]
+CRITICAL WARNING: [Vivado 12-4739] create_clock:No valid object(s) found for '-objects [get_ports clock]'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:79]
+Resolution: Check if the specified object(s) exists in the current design. If it does, ensure that the correct design hierarchy was specified for the object. If you are working with clocks, make sure create_clock was used to create the clock object before it is referenced.
+WARNING: [Vivado 12-584] No ports matched '[get_ports -of_objects [get_iobanks 33]]'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:359]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:359]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched '[get_ports -of_objects [get_iobanks 34]]'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:364]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:364]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched '[get_ports -of_objects [get_iobanks 35]]'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:369]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:369]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched '[get_ports -of_objects [get_iobanks 13]]'. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:372]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc:372]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+Finished Parsing XDC File [C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/constrs_1/new/constraints.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1051.348 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 32 instances were transformed.
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 32 instances
+
+10 Infos, 6 Warnings, 6 Critical Warnings and 0 Errors encountered.
+link_design completed successfully
+link_design: Time (s): cpu = 00:00:05 ; elapsed = 00:00:09 . Memory (MB): peak = 1051.348 ; gain = 564.375
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1076.316 ; gain = 24.969
+
+Starting Cache Timing Information Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Cache Timing Information Task | Checksum: b552c78b
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 1602.383 ; gain = 526.066
+
+Starting Logic Optimization Task
+
+Phase 1 Initialization
+
+Phase 1.1 Core Generation And Design Setup
+Phase 1.1 Core Generation And Design Setup | Checksum: b552c78b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Phase 1.2 Setup Constraints And Sort Netlist
+Phase 1.2 Setup Constraints And Sort Netlist | Checksum: b552c78b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Phase 1 Initialization | Checksum: b552c78b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Phase 2 Timer Update And Timing Data Collection
+
+Phase 2.1 Timer Update
+Phase 2.1 Timer Update | Checksum: b552c78b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.034 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Phase 2.2 Timing Data Collection
+Phase 2.2 Timing Data Collection | Checksum: b552c78b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.046 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Phase 2 Timer Update And Timing Data Collection | Checksum: b552c78b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.046 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Phase 3 Retarget
+WARNING: [Opt 31-155] Driverless net InstrFetch/instr_mem/U0/inst_blk_mem_gen/gnbram.gnative_mem_map_bmg.native_mem_map_blk_mem_gen/valid.cstr/rsta is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: InstrFetch/instr_mem/U0/inst_blk_mem_gen/gnbram.gnative_mem_map_bmg.native_mem_map_blk_mem_gen/valid.cstr/mux_a_wire.mux_reg.ce_pri.douta_i[31]_i_1
+INFO: [Opt 31-1566] Pulled 1 inverters resulting in an inversion of 11 pins
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 3 Retarget | Checksum: 144680515
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.085 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Retarget | Checksum: 144680515
+INFO: [Opt 31-389] Phase Retarget created 1 cells and removed 2 cells
+
+Phase 4 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 4 Constant propagation | Checksum: 1467a1b24
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.094 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Constant propagation | Checksum: 1467a1b24
+INFO: [Opt 31-389] Phase Constant propagation created 0 cells and removed 1 cells
+
+Phase 5 Sweep
+Phase 5 Sweep | Checksum: 1138d75d3
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.253 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Sweep | Checksum: 1138d75d3
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 778 cells
+
+Phase 6 BUFG optimization
+Phase 6 BUFG optimization | Checksum: 1138d75d3
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.322 . Memory (MB): peak = 1969.238 ; gain = 0.000
+BUFG optimization | Checksum: 1138d75d3
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 7 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 7 Shift Register Optimization | Checksum: 1138d75d3
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.324 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Shift Register Optimization | Checksum: 1138d75d3
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 8 Post Processing Netlist
+Phase 8 Post Processing Netlist | Checksum: 1138d75d3
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.326 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Post Processing Netlist | Checksum: 1138d75d3
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+
+Phase 9 Finalization
+
+Phase 9.1 Finalizing Design Cores and Updating Shapes
+Phase 9.1 Finalizing Design Cores and Updating Shapes | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.328 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Phase 9.2 Verifying Netlist Connectivity
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Phase 9.2 Verifying Netlist Connectivity | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.330 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Phase 9 Finalization | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.330 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |               1  |               2  |                                              0  |
+|  Constant propagation         |               0  |               1  |                                              0  |
+|  Sweep                        |               0  |             778  |                                              0  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+Ending Logic Optimization Task | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.332 . Memory (MB): peak = 1969.238 ; gain = 0.000
+INFO: [Constraints 18-11670] Building netlist checker database with flags, 0x8
+Done building netlist checker database: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Starting Final Cleanup Task
+Ending Final Cleanup Task | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.238 ; gain = 0.000
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Ending Netlist Obfuscation Task | Checksum: ccf0e3c2
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.238 ; gain = 0.000
+INFO: [Common 17-83] Releasing license: Implementation
+29 Infos, 7 Warnings, 6 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:13 ; elapsed = 00:00:17 . Memory (MB): peak = 1969.238 ; gain = 917.891
+INFO: [runtcl-4] Executing : report_drc -file top_level_drc_opted.rpt -pb top_level_drc_opted.pb -rpx top_level_drc_opted.rpx
+Command: report_drc -file top_level_drc_opted.rpt -pb top_level_drc_opted.pb -rpx top_level_drc_opted.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/impl_1/top_level_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1969.238 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/impl_1/top_level_opt.dcp' has been generated.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020'
+INFO: [Common 17-83] Releasing license: Implementation
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 2 CPUs
+
+Starting Placer Task
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 00000000
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1969.238 ; gain = 0.000
+Phase 1 Placer Initialization | Checksum: 00000000
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1969.238 ; gain = 0.000
+ERROR: [Place 30-494] The design is empty
+Resolution: Check if opt_design has removed all the leaf cells of your design.  Check whether you have instantiated and connected all of the top level ports.
+Ending Placer Task | Checksum: 00000000
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1969.238 ; gain = 0.000
+44 Infos, 7 Warnings, 6 Critical Warnings and 2 Errors encountered.
+place_design failed
+ERROR: [Common 17-69] Command failed: Placer could not place all instances
+INFO: [Common 17-206] Exiting Vivado at Thu Aug  1 10:12:47 2024...

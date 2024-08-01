@@ -1,2 +1,2 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/sim_1/new/instr_fetch_testbench.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'instr_fetch_testbench'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.srcs/sim_1/new/mem_testbench.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'tb_memory_write_back'

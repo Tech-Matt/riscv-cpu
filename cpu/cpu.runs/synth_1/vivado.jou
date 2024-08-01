@@ -3,12 +3,12 @@
 # SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
 # IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
 # SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
-# Start of session at: Tue Jul 30 14:50:40 2024
-# Process ID: 2976
+# Start of session at: Thu Aug  1 10:10:50 2024
+# Process ID: 3612
 # Current directory: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/synth_1
-# Command line: vivado.exe -log instruction_fetch.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source instruction_fetch.tcl
-# Log file: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/synth_1/instruction_fetch.vds
+# Command line: vivado.exe -log top_level.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level.tcl
+# Log file: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/synth_1/top_level.vds
 # Journal file: C:/Users/matti/Documents/Vivado_Vitis/riscv-cpu/cpu/cpu.runs/synth_1\vivado.jou
 # Running On: la_bestia, OS: Windows, CPU Frequency: 3194 MHz, CPU Physical cores: 16, Host memory: 16312 MB
 #-----------------------------------------------------------
-source instruction_fetch.tcl -notrace
+source top_level.tcl -notrace

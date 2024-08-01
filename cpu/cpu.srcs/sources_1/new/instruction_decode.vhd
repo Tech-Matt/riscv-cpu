@@ -41,8 +41,8 @@ entity instruction_decode is
         rd_wr_enable: in std_logic; -- Choose whether to read or write to register file (0 = read, 1 = write)
         
         -- OUTPUTS
-        rs1_val: out std_logic_vector(31 downto 0); -- Register source 1 value
-        rs2_val: out std_logic_vector (31 downto 0); -- Register source 2 value
+        rs1_val: out unsigned(31 downto 0); -- Register source 1 value
+        rs2_val: out unsigned (31 downto 0); -- Register source 2 value
         immediate: out unsigned(31 downto 0); -- 32 bit extended Immediate
         op_class: out std_logic_vector(4 downto 0); -- Operation type (Encoded ONE-HOT OSLBJ)
         alu_opcode: out std_logic_vector(2 downto 0); 
@@ -80,7 +80,7 @@ COMPONENT decoder
     rd: out std_logic_vector(4 downto 0);
     rs1: out std_logic_vector(4 downto 0);
     rs2: out std_logic_vector(4 downto 0);
-    immediate: out std_logic_vector(11 downto 0);
+    immediate: out std_logic_vector(19 downto 0);
     a_sel: out std_logic;
     b_sel: out std_logic
   );
@@ -89,9 +89,11 @@ END COMPONENT;
 signal rs1: std_logic_vector(4 downto 0); -- Register Source A Address
 signal rs2: std_logic_vector(4 downto 0); -- Register Source B Address
 signal rd: std_logic_vector(4 downto 0); -- Register Destination Address
-signal imm_12: std_logic_vector(11 downto 0);
+signal imm_20: std_logic_vector(19 downto 0);
 signal imm_32: unsigned(31 downto 0);
 signal r_input: std_logic_vector(4 downto 0);
+signal rs1_val_std: std_logic_vector(31 downto 0);
+signal rs2_val_std: std_logic_vector(31 downto 0);
 
 -- Unregistered outputs
 signal op_c: std_logic_vector(4 downto 0); --op class
@@ -121,7 +123,7 @@ dec: decoder
     rd => rd,
     rs1 => rs1,
     rs2 => rs2,
-    immediate => imm_12,
+    immediate => imm_20,
     a_sel => a,
     b_sel => b
   );
@@ -133,19 +135,19 @@ register_file: dist_mem_gen_0
     dpra => rs2, -- Read Address of RS_B
     clk => clk,
     we => write_en, -- Write enable
-    qspo => rs1_val, -- RS_A Data Output
-    qdpo => rs2_val -- RS_B Data Output
+    qspo => rs1_val_std, -- RS_A Data Output
+    qdpo => rs2_val_std -- RS_B Data Output
   );
-
+ 
 -- IMMEDIATE 32 BIT EXTENSION REGISTERED
 process(clk)
 begin
     if rising_edge(clk) then
         -- Perform sign extension
-        if imm_12(11) = '0' then
-            imm_32 <= unsigned("00000000000000000000" & imm_12); -- Zero extend if MSB is 0
+        if imm_20(19) = '0' then
+            imm_32 <= unsigned("000000000000" & imm_20); -- Zero extend if MSB is 0
         else
-            imm_32 <= unsigned("11111111111111111111" & imm_12); -- Sign extend if MSB is 1
+            imm_32 <= unsigned("111111111111" & imm_20); -- Sign extend if MSB is 1
         end if;
 
         -- Assign the extended immediate to the output
@@ -165,4 +167,16 @@ begin
     end if;
 end process;
 
+-- Output rs1_val as unsigned
+process(rs1_val_std) is
+begin
+    rs1_val <= unsigned(rs1_val_std);
+end process;
+
+-- Output rs2_val as unsigned
+process(rs2_val_std) is
+begin
+    rs2_val <= unsigned(rs2_val_std);
+end process;
+ 
 end Behavioral;

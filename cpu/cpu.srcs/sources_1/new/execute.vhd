@@ -45,8 +45,8 @@ entity execute is
         b_sel: in std_logic; -- mux b
         -- OUTPUT
         branch_cond: out std_logic;
-        alu_pre_result: out unsigned(31 downto 0);
-        alu_result: out unsigned(31 downto 0)
+        alu_pre_result: out std_logic_vector(31 downto 0);
+        alu_result: out std_logic_vector(31 downto 0)
   );
 end execute;
 
@@ -76,6 +76,7 @@ end COMPONENT;
 signal branch_cond_unregistered: std_logic;
 signal mux_a: unsigned(31 downto 0); -- PC or rs1_val
 signal mux_b: unsigned(31 downto 0); -- Immediate or rs2_val
+signal alu_pre_r_unsigned: unsigned(31 downto 0);
 
 begin
 
@@ -83,9 +84,9 @@ alu_unit: alu port map (
     alu_opcode => alu_opcode,
     rs1_val => mux_a, -- chooses between pc and rs1_val
     rs2_val => mux_b, -- chooses between immediate and rs2_val
-    value_out => alu_pre_result
+    value_out => alu_pre_r_unsigned
 );
-
+  
 comp: comparator port map (
     rs1_val => rs1_val,
     rs2_val => rs2_val,
@@ -101,6 +102,12 @@ begin
     end if;
 end process;
 
+-- TYPE CONVERSION
+process(alu_pre_r_unsigned) is
+begin
+    alu_pre_result <= std_logic_vector(alu_pre_r_unsigned);
+end process;
+
 -- ALU RESULT REGISTER
 process (clk) is
 begin
@@ -108,7 +115,7 @@ begin
         alu_result <= alu_pre_result;
     end if;
 end process;
-
+ 
 -- MUX A
 process (rs1_val, pc) is
 begin

@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../cpu.srcs/sources_1/new/instruction_fetch.vhd" \
-"../../../../cpu.srcs/sim_1/new/instr_fetch_testbench.vhd" \
-
-# Do not sort compile order
-nosort

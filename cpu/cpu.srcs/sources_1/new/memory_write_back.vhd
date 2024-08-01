@@ -37,7 +37,7 @@ entity memory_write_back is
     clk: in std_logic;
     branch_cond: in std_logic;
     next_pc: in unsigned(31 downto 0);
-    alu_result: in unsigned(31 downto 0);
+    alu_result: in std_logic_vector(31 downto 0);
     alu_pre_result: in std_logic_vector(31 downto 0);
     op_class: in std_logic_vector(4 downto 0);
     mem_we: in std_logic;
@@ -93,7 +93,7 @@ begin
     if op_class = "00100" then -- LOAD
         rd_value <= unsigned(mem_out);
     elsif op_class = "10000" then -- OPERATION
-        rd_value <= alu_result;
+        rd_value <= unsigned(alu_result);
     elsif op_class = "00001" then -- JUMP
         rd_value <= next_pc;
     end if;
@@ -104,9 +104,9 @@ begin
     if op_class = "10000" or op_class = "01000" or op_class = "00100" then -- IF OP, LOAD, STORE
         pc_out <= next_pc;
     elsif op_class = "00001" then -- JUMP
-        pc_out <= alu_result;
+        pc_out <= unsigned(alu_result);
     elsif op_class = "00010" and branch_cond = '1' then -- Take BRANCH
-        pc_out <= alu_result;
+        pc_out <= unsigned(alu_result);
     else -- Don't take BRANCH
         pc_out <= next_pc;
     end if;

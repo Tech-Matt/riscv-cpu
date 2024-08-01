@@ -64,6 +64,7 @@ begin
         when "101" =>
             branch_cond <= '1' when rs1_val >= rs2_val else '0';
 -------------------------------------------------------------------------------------------------------
+        when others => null;
     end case; 
 end process;
 
