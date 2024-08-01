@@ -215,6 +215,8 @@ The Memory and Write Back stage uses a data memory component for reading from an
 ## Instruction Fetch TestBench
 ![image](https://github.com/user-attachments/assets/d7a6e725-8231-4d8f-9002-795dc31be412)
 
+## Instruction Decode TestBench
+
 
 ## Todo
 
