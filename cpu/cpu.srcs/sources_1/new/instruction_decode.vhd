@@ -35,8 +35,6 @@ entity instruction_decode is
   Port ( 
         -- INPUTS
         clk: in std_logic; 
-        pc: in unsigned(31 downto 0); -- Current Program counter
-        next_pc: in unsigned(31 downto 0); -- Next program counter
         instr: in std_logic_vector (31 downto 0); -- Instruction coming from Instruction Fetch stage
         write_en: in std_logic; -- Write enable for the register file
         rd_value: in unsigned(31 downto 0); -- Possible value to be written to register (coming from write back)
