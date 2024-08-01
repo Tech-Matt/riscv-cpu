@@ -302,14 +302,6 @@ The Memory and Write Back stage uses a data memory component for reading from an
 
 ## Todo
 
-<ins> Max Priority </ins>
-
-<ins> Normal </ins>
-- [ ] Remember to pur default variable value everywhere, otherwise latches could be inferred
-- [ ] Write table of signals for instruction fetch
-- [ ] Write table of signals for instruction decode
-- [ ] Create alu_opcode table
-
 <ins> To be done one day in the future </ins>
 - [ ] Chose a standard for variables in vhdl, uppercase or lowercase?
 - [ ] See in instruction decode if it is best to keep std_logic_vector for some signals, or change it to unsigned
@@ -317,6 +309,4 @@ The Memory and Write Back stage uses a data memory component for reading from an
 - [ ] You could add flags to alu operations
 
 
-
-## Implementation Comments
 
