@@ -1,5 +1,5 @@
 # riscv-cpu
-A RISC-V RV32I cpu implementation in VHDL, using AMD Vivado Software.
+A RISC-V non pipelined RV32I cpu implementation in VHDL, using AMD Vivado Software.
 
 Read Github [Wiki](https://github.com/Tech-Matt/riscv-cpu/wiki) for more details.
 
@@ -38,6 +38,74 @@ The entire instruction fetch stage is executed in one clock cycle. Here is the f
 - BRAM Instruction Memory fetches instruction reading PC if LOAD_EN_MEM is active. A synchronous RST may reset the Instruction Memory
 - In the meantime PC + 4 is computed and saved in NPC (Next Program Counter)
 - BRAM will save Instruction in internal IR (instruction register) before the arrival of the next clock pulse
+
+| Signal Name | Direction | Type                        | Function                                                                 |
+|-------------|-----------|-----------------------------|--------------------------------------------------------------------------|
+| clk         | in        | std_logic                   | Clock signal that drives the registers of PC, block RAM, NPC, and IR.    |
+| pc_in       | in        | unsigned(31 downto 0)       | Program counter input coming from other stages.                         |
+| load_en     | in        | std_logic                   | Load enable signal to activate or deactivate writing on the PC register (active low). |
+| res         | in        | std_logic                   | Synchronous reset for instruction memory (active high).                 |
+| instr_out   | out       | std_logic_vector(31 downto 0)| Instruction fetched from instruction memory.                            |
+| current_pc  | out       | unsigned(31 downto 0)       | Current program counter connected to the next stages.                   |
+| next_pc     | out       | unsigned(31 downto 0)       | Next program counter value (PC + 4 bytes).                              |
+| pc          | internal  | unsigned(31 downto 0)       | Internal signal for the current program counter.                        |
+| instr       | internal  | std_logic_vector(31 downto 0)| Internal signal for the instruction fetched from instruction memory.    |
+
+## Instruction Decode Stage
+![image](https://github.com/user-attachments/assets/443186e3-aafc-49e8-b343-46ff2ccb3d1a)
+
+**The Instruction Decode (ID)** stage is responsible for interpreting the fetched instruction. It extracts the necessary control signals and operands required for the Execute stage. This stage reads the instruction, decodes it, reads the necessary register values, and generates immediate values and control signals.
+
+**Decoder Block**
+The Decoder block is part of the Instruction Decode stage. It takes a 32-bit instruction and extracts relevant fields such as opcode, func3, func7, and register addresses. Based on the opcode and func3, it generates control signals and immediate values.
+
+#### Instruction Decode Signals
+
+| Signal Name   | Direction | Type                        | Function                                                                                   |
+|---------------|-----------|-----------------------------|--------------------------------------------------------------------------------------------|
+| clk           | in        | std_logic                   | Clock signal.                                                                              |
+| instr         | in        | std_logic_vector(31 downto 0)| Instruction coming from the Instruction Fetch stage.                                       |
+| write_en      | in        | std_logic                   | Enables writing to the register file.                                                      |
+| rd_value      | in        | unsigned(31 downto 0)       | Value to be written to the register file.                                                  |
+| rd_wr_enable  | in        | std_logic                   | Chooses between reading and writing to the register file (0 = read, 1 = write).            |
+| rs1_val       | out       | std_logic_vector(31 downto 0)| Value of the first source register.                                                        |
+| rs2_val       | out       | std_logic_vector(31 downto 0)| Value of the second source register.                                                       |
+| immediate     | out       | unsigned(31 downto 0)       | Extended 32-bit immediate value.                                                           |
+| op_class      | out       | std_logic_vector(4 downto 0)| Indicates the type of operation (encoded one-hot: OP, Store, Load, Branch, Jump).          |
+| alu_opcode    | out       | std_logic_vector(2 downto 0)| ALU operation code.                                                                        |
+| cond_opcode   | out       | std_logic_vector(2 downto 0)| Conditional operation code.                                                                |
+| a_sel         | out       | std_logic                   | Controls the multiplexer A in the Execute stage (0: pc, 1: rs1_value).                      |
+| b_sel         | out       | std_logic                   | Controls the multiplexer B in the Execute stage (0: immediate, 1: rs2_value).               |
+| rs1           | internal  | std_logic_vector(4 downto 0)| Address of the first source register.                                                      |
+| rs2           | internal  | std_logic_vector(4 downto 0)| Address of the second source register.                                                     |
+| rd            | internal  | std_logic_vector(4 downto 0)| Address of the destination register.                                                       |
+| imm_12        | internal  | std_logic_vector(11 downto 0)| 12-bit immediate value.                                                                    |
+| imm_32        | internal  | unsigned(31 downto 0)       | Extended 32-bit immediate value.                                                           |
+| r_input       | internal  | std_logic_vector(4 downto 0)| Input to the register file multiplexer for read/write selection.                           |
+| op_c          | internal  | std_logic_vector(4 downto 0)| Internal signal for the operation class.                                                   |
+| alu_op        | internal  | std_logic_vector(2 downto 0)| Internal signal for the ALU operation code.                                                |
+| cond_op       | internal  | std_logic_vector(2 downto 0)| Internal signal for the conditional operation code.                                        |
+| a             | internal  | std_logic                   | Internal signal for the multiplexer A selection.                                           |
+| b             | internal  | std_logic                   | Internal signal for the multiplexer B selection.                                           |
+
+#### Decoder Signals
+
+| Signal Name   | Direction | Type                        | Function                                                                                   |
+|---------------|-----------|-----------------------------|--------------------------------------------------------------------------------------------|
+| instr         | in        | std_logic_vector(31 downto 0)| 32-bit instruction to be decoded.                                                          |
+| op_class      | out       | std_logic_vector(4 downto 0)| Indicates the type of operation (one-hot encoded).                                         |
+| alu_opcode    | out       | std_logic_vector(2 downto 0)| ALU operation code based on func3 and func7.                                               |
+| cond_opcode   | out       | std_logic_vector(2 downto 0)| Conditional operation code based on func3.                                                 |
+| rd            | out       | std_logic_vector(4 downto 0)| Address of the destination register.                                                       |
+| rs1           | out       | std_logic_vector(4 downto 0)| Address of the first source register.                                                      |
+| rs2           | out       | std_logic_vector(4 downto 0)| Address of the second source register.                                                     |
+| immediate     | out       | std_logic_vector(11 downto 0)| 12-bit immediate value extracted from the instruction.                                     |
+| a_sel         | out       | std_logic                   | Control signal for multiplexer A (0: pc, 1: rs1_value).                                    |
+| b_sel         | out       | std_logic                   | Control signal for multiplexer B (0: immediate, 1: rs2_value).                             |
+| func3         | internal  | std_logic_vector(2 downto 0)| Function field from the instruction (bits 14-12).                                          |
+| func7         | internal  | std_logic_vector(6 downto 0)| Function field from the instruction (bits 31-25).                                          |
+| opcode        | internal  | std_logic_vector(6 downto 0)| Opcode field from the instruction (bits 6-0).                                              |
+
 
 ## Todo
 
